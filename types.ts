@@ -38,6 +38,7 @@ export interface CoreValue {
   text: string;
   category: CoreCategory;
   progress: number;
+  memo?: string;
 }
 
 export interface AppData {

@@ -34,6 +34,7 @@ export default function App() {
   const [inputs, setInputs] = useState({ today: "", weekly: "", monthly: "", yearly: "", value: "" });
   const [activePriority, setActivePriority] = useState<Priority>(Priority.A);
   const [editingMemoId, setEditingMemoId] = useState<string | null>(null);
+  const [editingCoreValueMemoId, setEditingCoreValueMemoId] = useState<string | null>(null);
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -172,21 +173,77 @@ export default function App() {
   };
 
   const dailyTasks = useMemo(() => {
-    return data.tasks
-      .filter(t => {
-        if (t.date === selectedDate) return true;
-        if (t.date < selectedDate && !t.completed) return true;
-        return false;
-      })
-      .sort((a, b) => {
-        if (a.importance !== b.importance) return a.importance.localeCompare(b.importance);
-        if (a.date !== b.date) return a.date.localeCompare(b.date);
-        return a.sequence - b.sequence;
-      });
+    // 오늘 날짜의 태스크
+    const todayTasks = data.tasks.filter(t => t.date === selectedDate);
+    
+    // 과거 날짜의 미완료 태스크를 오늘로 이동
+    const pastIncompleteTasks = data.tasks.filter(t => 
+      t.date < selectedDate && !t.completed
+    );
+    
+    if (pastIncompleteTasks.length > 0) {
+      setData(prev => ({
+        ...prev,
+        tasks: prev.tasks.map(t => 
+          pastIncompleteTasks.find(pt => pt.id === t.id)
+            ? { ...t, date: selectedDate }
+            : t
+        )
+      }));
+    }
+    
+    return todayTasks.sort((a, b) => {
+      if (a.importance !== b.importance) return a.importance.localeCompare(b.importance);
+      return a.sequence - b.sequence;
+    });
   }, [data.tasks, selectedDate]);
 
-  const weeklyGoals = useMemo(() => data.goals.filter(g => g.type === 'weekly' && g.identifier === weekId), [data.goals, weekId]);
-  const monthlyGoals = useMemo(() => data.goals.filter(g => g.type === 'monthly' && g.identifier === monthId), [data.goals, monthId]);
+  const weeklyGoals = useMemo(() => {
+    const currentWeekGoals = data.goals.filter(g => g.type === 'weekly' && g.identifier === weekId);
+    const previousWeekGoals = data.goals.filter(g => 
+      g.type === 'weekly' && 
+      g.identifier < weekId && 
+      !g.completed
+    );
+    
+    // 이전 주의 미완료 항목을 현재 주로 이동
+    if (previousWeekGoals.length > 0) {
+      setData(prev => ({
+        ...prev,
+        goals: prev.goals.map(g => 
+          previousWeekGoals.find(pg => pg.id === g.id)
+            ? { ...g, identifier: weekId }
+            : g
+        )
+      }));
+    }
+    
+    return currentWeekGoals;
+  }, [data.goals, weekId]);
+
+  const monthlyGoals = useMemo(() => {
+    const currentMonthGoals = data.goals.filter(g => g.type === 'monthly' && g.identifier === monthId);
+    const previousMonthGoals = data.goals.filter(g => 
+      g.type === 'monthly' && 
+      g.identifier < monthId && 
+      !g.completed
+    );
+    
+    // 이전 달의 미완료 항목을 현재 달로 이동
+    if (previousMonthGoals.length > 0) {
+      setData(prev => ({
+        ...prev,
+        goals: prev.goals.map(g => 
+          previousMonthGoals.find(pg => pg.id === g.id)
+            ? { ...g, identifier: monthId }
+            : g
+        )
+      }));
+    }
+    
+    return currentMonthGoals;
+  }, [data.goals, monthId]);
+
   const yearlyGoals = useMemo(() => data.goals.filter(g => g.type === 'yearly' && g.identifier === yearId), [data.goals, yearId]);
 
   const addTask = () => {
@@ -372,13 +429,16 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-3 sm:px-6 space-y-8 sm:space-y-12 mt-4 sm:mt-8 pb-24 sm:pb-32">
+      <main className="max-w-4xl mx-auto px-3 sm:px-6 space-y-6 sm:space-y-8 mt-3 sm:mt-6 pb-16 sm:pb-24">
         
         {/* 1. Weekly Mission */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 px-2">
-            <Target className="text-indigo-600 w-7 h-7 sm:w-7 sm:h-7" />
-            <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-indigo-800/80">WEEKLY MISSION</h3>
+        <section className="space-y-3">
+          <div className="flex items-center gap-3 px-2 flex-wrap">
+            <div className="flex items-center gap-3">
+              <Target className="text-indigo-600 w-7 h-7 sm:w-7 sm:h-7" />
+              <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-indigo-800/80">WEEKLY MISSION</h3>
+            </div>
+            <span className="text-xs sm:text-sm text-slate-400 font-medium italic">💡 구체적 마감시간 + 정량화 가능한 목표</span>
           </div>
           <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-50 space-y-4 sm:space-y-6">
             <div className="flex gap-2 sm:gap-4">
@@ -406,7 +466,7 @@ export default function App() {
         </section>
 
         {/* 2. Today's Focus */}
-        <section className="space-y-4">
+        <section className="space-y-3">
           <div className="flex items-center gap-3 px-2">
             <CalendarIcon className="text-rose-500 w-7 h-7 sm:w-7 sm:h-7" />
             <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.2em] text-rose-500">TODAY'S FOCUS</h3>
@@ -498,7 +558,7 @@ export default function App() {
         </section>
 
         {/* 3. History & Calendar */}
-        <section className="space-y-4">
+        <section className="space-y-3">
           <div className="flex items-center gap-3 px-2">
             <History className="text-slate-400 w-7 h-7 sm:w-7 sm:h-7" />
             <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-slate-400">HISTORY & CALENDAR</h3>
@@ -507,7 +567,7 @@ export default function App() {
         </section>
 
         {/* 4. Monthly Mission */}
-        <section className="space-y-4">
+        <section className="space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
               <Layers className="text-[#5851db] w-7 h-7 sm:w-7 sm:h-7" />
@@ -546,7 +606,7 @@ export default function App() {
         </section>
 
         {/* 5. Yearly Vision */}
-        <section className="space-y-4">
+        <section className="space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
               <Target className="text-[#f43f5e] w-7 h-7 sm:w-7 sm:h-7" />
@@ -584,7 +644,7 @@ export default function App() {
         </section>
 
         {/* 6. Core Values */}
-        <section className="space-y-6">
+        <section className="space-y-4">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center justify-center gap-3">
               <Heart className="text-[#e8810c] w-7 h-7 sm:w-8 sm:h-8" fill="#e8810c" />
@@ -618,8 +678,29 @@ export default function App() {
                   <div key={v.id} className={`group relative p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] border transition-all ${cat.bg} ${cat.border} shadow-sm space-y-3 sm:space-y-4`}>
                     <div className="flex items-center justify-between">
                       <span className={`text-xs sm:text-sm font-black uppercase tracking-widest ${cat.color}`}>{cat.label}</span>
-                      <div className="flex items-center gap-2">
-                        <button onClick={() => handlePromoteCoreValue(v.text)} className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"><ChevronUp size={20} strokeWidth={3} /></button>
+                      <div className="flex items-center gap-1.5">
+                        <button 
+                          onClick={() => handlePromoteCoreValue(v.text)} 
+                          className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"
+                          title="연간 목표로 이동"
+                        >
+                          <ChevronUp size={18} strokeWidth={3} />
+                        </button>
+                        <button 
+                          onClick={() => handleCopyToToday(`[핵심가치] ${v.text}`)}
+                          className="p-1.5 text-slate-300 hover:text-rose-500 transition-colors"
+                          title="오늘의 할 일로 복사"
+                        >
+                          <ArrowDownCircle size={18} strokeWidth={2.5} />
+                        </button>
+                        <button 
+                          onClick={() => setEditingCoreValueMemoId(editingCoreValueMemoId === v.id ? null : v.id)}
+                          className={`p-1.5 transition-colors ${v.memo ? 'text-indigo-500 bg-white/50 rounded-lg' : 'text-slate-300 hover:text-indigo-500'}`}
+                          title="메모"
+                        >
+                          <StickyNote size={18} strokeWidth={2.5} />
+                        </button>
+                        <div className="w-px h-4 bg-slate-200/50 mx-1" />
                         <span className={`text-sm font-black tabular-nums ${cat.color}`}>{v.progress}%</span>
                         <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.map(cv => cv.id === v.id ? {...cv, progress: Math.min(100, cv.progress + 10)} : cv) }))} className="p-1 text-slate-300 hover:text-slate-600"><Plus size={16}/></button>
                       </div>
@@ -632,6 +713,17 @@ export default function App() {
                     <div className="w-full h-1.5 bg-white/50 rounded-full overflow-hidden">
                       <div className={`h-full transition-all duration-1000 ${cat.active.split(' ')[0]}`} style={{ width: `${v.progress}%` }} />
                     </div>
+                    {editingCoreValueMemoId === v.id && (
+                      <div className="animate-in slide-in-from-top-2">
+                        <textarea 
+                          autoFocus
+                          placeholder="핵심가치에 대한 상세 내용을 입력하세요..."
+                          className="w-full bg-white/70 border border-slate-200 rounded-2xl p-4 text-base font-medium outline-none min-h-[100px] focus:ring-4 focus:ring-indigo-50 transition-all"
+                          value={v.memo || ""}
+                          onChange={(e) => setData(p => ({ ...p, coreValues: p.coreValues.map(cv => cv.id === v.id ? {...cv, memo: e.target.value} : cv) }))}
+                        />
+                      </div>
+                    )}
                     <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.filter(cv => cv.id !== v.id) }))} className="absolute -top-2 -right-2 w-9 h-9 bg-white text-rose-500 rounded-full shadow-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100"><Trash2 size={16} /></button>
                   </div>
                 );
