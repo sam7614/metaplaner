@@ -319,8 +319,8 @@ export default function App() {
     setInputs(p => ({ ...p, value: "" }));
   };
 
-  const inputBaseClass = "flex-1 bg-slate-50/50 border border-slate-100 rounded-[1.2rem] sm:rounded-[1.5rem] px-4 sm:px-8 py-3 sm:py-5 outline-none font-bold text-slate-800 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all text-sm sm:text-base";
-  const buttonBaseClass = "w-12 h-12 sm:w-16 sm:h-16 bg-[#121826] text-white rounded-[1.2rem] sm:rounded-[1.5rem] flex items-center justify-center hover:scale-105 active:scale-95 shadow-xl transition-all shrink-0";
+  const inputBaseClass = "flex-1 bg-slate-50/50 border border-slate-100 rounded-[1.2rem] sm:rounded-[1.5rem] px-4 sm:px-8 py-3 sm:py-5 outline-none font-bold text-slate-800 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all text-base sm:text-lg";
+  const buttonBaseClass = "w-14 h-14 sm:w-16 sm:h-16 bg-[#121826] text-white rounded-[1.2rem] sm:rounded-[1.5rem] flex items-center justify-center hover:scale-105 active:scale-95 shadow-xl transition-all shrink-0";
 
   if (!userId) {
     return (
@@ -377,8 +377,8 @@ export default function App() {
         {/* 1. Weekly Mission */}
         <section className="space-y-4">
           <div className="flex items-center gap-3 px-2">
-            <Target className="text-indigo-600 w-6 h-6 sm:w-7 sm:h-7" />
-            <h3 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-indigo-800/80">WEEKLY MISSION</h3>
+            <Target className="text-indigo-600 w-7 h-7 sm:w-7 sm:h-7" />
+            <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-indigo-800/80">WEEKLY MISSION</h3>
           </div>
           <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-50 space-y-4 sm:space-y-6">
             <div className="flex gap-2 sm:gap-4">
@@ -408,8 +408,8 @@ export default function App() {
         {/* 2. Today's Focus */}
         <section className="space-y-4">
           <div className="flex items-center gap-3 px-2">
-            <CalendarIcon className="text-rose-500 w-6 h-6 sm:w-7 sm:h-7" />
-            <h3 className="text-sm sm:text-base font-black uppercase tracking-[0.2em] text-rose-500">TODAY'S FOCUS</h3>
+            <CalendarIcon className="text-rose-500 w-7 h-7 sm:w-7 sm:h-7" />
+            <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.2em] text-rose-500">TODAY'S FOCUS</h3>
           </div>
           <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-slate-50 space-y-4 sm:space-y-6">
             <div className="flex gap-2 sm:gap-4">
@@ -426,36 +426,36 @@ export default function App() {
             <div className="flex items-center justify-between px-1">
               <div className="flex bg-slate-50 p-1 rounded-xl gap-1">
                 {[Priority.A, Priority.B, Priority.C].map(p => (
-                  <button key={p} onClick={() => setActivePriority(p)} className={`w-10 sm:w-12 py-2 rounded-lg text-[10px] font-black transition-all ${activePriority === p ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-300 hover:text-slate-400'}`}>{p}</button>
+                  <button key={p} onClick={() => setActivePriority(p)} className={`w-12 sm:w-14 py-2.5 rounded-lg text-xs sm:text-sm font-black transition-all ${activePriority === p ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-300 hover:text-slate-400'}`}>{p}</button>
                 ))}
               </div>
-              <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Priority {activePriority}</div>
+              <div className="text-xs sm:text-sm font-black text-slate-300 uppercase tracking-widest">Priority {activePriority}</div>
             </div>
 
             <div className="space-y-3 pt-4 border-t border-slate-50">
               {dailyTasks.map((task, idx) => (
                 <div key={task.id} className="space-y-2">
                   <div className={`group flex items-start gap-2 sm:gap-4 p-3 sm:p-4 rounded-[1.5rem] sm:rounded-[1.8rem] border transition-all ${task.completed ? 'bg-slate-50/30 opacity-40 border-transparent' : 'bg-white border-slate-100 shadow-sm hover:shadow-lg'}`}>
-                    <button onClick={() => setData(prev => ({ ...prev, tasks: prev.tasks.map(t => t.id === task.id ? { ...t, completed: !t.completed } : t) }))} className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 flex items-center justify-center transition-all ${task.completed ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-100 bg-white hover:border-rose-200'}`}>
-                      {task.completed ? <CheckCircle2 size={16} className="sm:w-[18px] sm:h-[18px]"/> : <Circle className="text-slate-100" size={18} className="sm:w-5 sm:h-5"/>}
+                    <button onClick={() => setData(prev => ({ ...prev, tasks: prev.tasks.map(t => t.id === task.id ? { ...t, completed: !t.completed } : t) }))} className={`shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 flex items-center justify-center transition-all ${task.completed ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-100 bg-white hover:border-rose-200'}`}>
+                      {task.completed ? <CheckCircle2 size={20} className="sm:w-[22px] sm:h-[22px]"/> : <Circle className="text-slate-100" size={22} className="sm:w-6 sm:h-6"/>}
                     </button>
                     
                     <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                       <div className="flex items-center gap-1 shrink-0 bg-slate-50 p-1 rounded-xl self-start sm:self-center border border-slate-100 shadow-sm">
                         <button 
                           onClick={() => cyclePriority(task)}
-                          className={`text-[11px] font-black w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 ${task.importance === Priority.A ? 'text-rose-500 bg-rose-50' : task.importance === Priority.B ? 'text-amber-500 bg-amber-50' : 'text-blue-500 bg-blue-50'}`}
+                          className={`text-sm font-black w-11 h-11 rounded-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95 ${task.importance === Priority.A ? 'text-rose-500 bg-rose-50' : task.importance === Priority.B ? 'text-amber-500 bg-amber-50' : 'text-blue-500 bg-blue-50'}`}
                         >
                           {task.importance}
                         </button>
                         
                         <div className="flex items-center gap-0.5 border-l border-slate-200 pl-1.5 ml-1">
-                          <span className="text-[10px] font-black text-slate-400 tabular-nums w-4 text-center">{task.sequence}</span>
+                          <span className="text-xs font-black text-slate-400 tabular-nums w-5 text-center">{task.sequence}</span>
                           <div className="flex flex-col ml-0.5">
-                            <button onClick={() => moveTask(task.id, 'up')} className="p-0.5 hover:text-indigo-600 text-slate-300 transition-colors"><ChevronUp size={12} /></button>
-                            <button onClick={() => moveTask(task.id, 'down')} className="p-0.5 hover:text-indigo-600 text-slate-300 transition-colors"><ChevronDown size={12} /></button>
+                            <button onClick={() => moveTask(task.id, 'up')} className="p-0.5 hover:text-indigo-600 text-slate-300 transition-colors"><ChevronUp size={14} /></button>
+                            <button onClick={() => moveTask(task.id, 'down')} className="p-0.5 hover:text-indigo-600 text-slate-300 transition-colors"><ChevronDown size={14} /></button>
                           </div>
-                          <button onClick={() => setEditingMemoId(editingMemoId === task.id ? null : task.id)} className={`ml-1 p-1.5 rounded-md transition-all ${task.memo ? 'text-indigo-500 bg-indigo-50' : 'text-slate-300 hover:bg-white hover:text-indigo-500'}`} title="메모 수정"><StickyNote size={14} /></button>
+                          <button onClick={() => setEditingMemoId(editingMemoId === task.id ? null : task.id)} className={`ml-1 p-1.5 rounded-md transition-all ${task.memo ? 'text-indigo-500 bg-indigo-50' : 'text-slate-300 hover:bg-white hover:text-indigo-500'}`} title="메모 수정"><StickyNote size={16} /></button>
                         </div>
                       </div>
 
@@ -465,11 +465,11 @@ export default function App() {
                             value={task.text} 
                             onSave={(text) => setData(p => ({ ...p, tasks: p.tasks.map(t => t.id === task.id ? {...t, text} : t) }))} 
                             strikethrough={task.completed} 
-                            className="text-sm sm:text-base font-bold text-slate-800 break-words leading-tight" 
+                            className="text-base sm:text-lg font-bold text-slate-800 break-words leading-tight" 
                           />
                           {task.date < selectedDate && (
-                            <span className="shrink-0 flex items-center gap-1 text-[8px] font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full uppercase tracking-tighter border border-amber-100">
-                              <History size={10} /> Roll
+                            <span className="shrink-0 flex items-center gap-1 text-[9px] sm:text-[10px] font-black text-amber-600 bg-amber-50 px-2 py-1 rounded-full uppercase tracking-tighter border border-amber-100">
+                              <History size={12} /> Roll
                             </span>
                           )}
                         </div>
@@ -477,7 +477,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center gap-1 shrink-0">
-                      <button onClick={() => setData(prev => ({ ...prev, tasks: prev.tasks.filter(t => t.id !== task.id) }))} className="p-2 text-slate-200 hover:text-rose-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all"><Trash2 size={18}/></button>
+                      <button onClick={() => setData(prev => ({ ...prev, tasks: prev.tasks.filter(t => t.id !== task.id) }))} className="p-2 text-slate-200 hover:text-rose-500 sm:opacity-0 sm:group-hover:opacity-100 transition-all"><Trash2 size={20}/></button>
                     </div>
                   </div>
                   {editingMemoId === task.id && (
@@ -485,7 +485,7 @@ export default function App() {
                       <textarea 
                         autoFocus
                         placeholder="작업에 대한 상세 내용을 입력하세요..."
-                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-medium outline-none min-h-[100px] focus:ring-4 focus:ring-indigo-50 transition-all"
+                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-base font-medium outline-none min-h-[100px] focus:ring-4 focus:ring-indigo-50 transition-all"
                         value={task.memo || ""}
                         onChange={(e) => setData(p => ({ ...p, tasks: p.tasks.map(t => t.id === task.id ? {...t, memo: e.target.value} : t) }))}
                       />
@@ -500,8 +500,8 @@ export default function App() {
         {/* 3. History & Calendar */}
         <section className="space-y-4">
           <div className="flex items-center gap-3 px-2">
-            <History className="text-slate-400 w-6 h-6 sm:w-7 sm:h-7" />
-            <h3 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-slate-400">HISTORY & CALENDAR</h3>
+            <History className="text-slate-400 w-7 h-7 sm:w-7 sm:h-7" />
+            <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-slate-400">HISTORY & CALENDAR</h3>
           </div>
           <CalendarMini selectedDate={selectedDate} onSelectDate={setSelectedDate} />
         </section>
@@ -510,13 +510,13 @@ export default function App() {
         <section className="space-y-4">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <Layers className="text-[#5851db] w-6 h-6 sm:w-7 sm:h-7" />
-              <h3 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-[#5851db]">MONTHLY MISSION</h3>
+              <Layers className="text-[#5851db] w-7 h-7 sm:w-7 sm:h-7" />
+              <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-[#5851db]">MONTHLY MISSION</h3>
             </div>
-            <div className="flex items-center bg-white border border-slate-100 rounded-full px-3 py-1 gap-3 shadow-sm">
-              <button onClick={() => setNavDate(new Date(navDate.setMonth(navDate.getMonth() - 1)))}><ChevronLeft size={16}/></button>
-              <span className="text-[10px] font-black">{monthId}</span>
-              <button onClick={() => setNavDate(new Date(navDate.setMonth(navDate.getMonth() + 1)))}><ChevronRight size={16}/></button>
+            <div className="flex items-center bg-white border border-slate-100 rounded-full px-3 py-1.5 gap-3 shadow-sm">
+              <button onClick={() => setNavDate(new Date(navDate.setMonth(navDate.getMonth() - 1)))}><ChevronLeft size={18}/></button>
+              <span className="text-xs sm:text-sm font-black">{monthId}</span>
+              <button onClick={() => setNavDate(new Date(navDate.setMonth(navDate.getMonth() + 1)))}><ChevronRight size={18}/></button>
             </div>
           </div>
           <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-50 space-y-4 sm:space-y-6">
@@ -549,13 +549,13 @@ export default function App() {
         <section className="space-y-4">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <Target className="text-[#f43f5e] w-6 h-6 sm:w-7 sm:h-7" />
-              <h3 className="text-sm sm:text-base font-black uppercase tracking-[0.15em] text-[#f43f5e]">YEARLY VISION</h3>
+              <Target className="text-[#f43f5e] w-7 h-7 sm:w-7 sm:h-7" />
+              <h3 className="text-base sm:text-lg font-black uppercase tracking-[0.15em] text-[#f43f5e]">YEARLY VISION</h3>
             </div>
-            <div className="flex items-center bg-white border border-slate-100 rounded-full px-3 py-1 gap-3 shadow-sm">
-              <button onClick={() => setNavYear(prev => prev - 1)}><ChevronLeft size={16}/></button>
-              <span className="text-[10px] font-black">{yearId}</span>
-              <button onClick={() => setNavYear(prev => prev + 1)}><ChevronRight size={16}/></button>
+            <div className="flex items-center bg-white border border-slate-100 rounded-full px-3 py-1.5 gap-3 shadow-sm">
+              <button onClick={() => setNavYear(prev => prev - 1)}><ChevronLeft size={18}/></button>
+              <span className="text-xs sm:text-sm font-black">{yearId}</span>
+              <button onClick={() => setNavYear(prev => prev + 1)}><ChevronRight size={18}/></button>
             </div>
           </div>
           <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-50 space-y-4 sm:space-y-6">
@@ -595,7 +595,7 @@ export default function App() {
             <div className="bg-white p-4 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-100 space-y-4 sm:space-y-6">
               <div className="flex flex-wrap justify-center gap-2">
                 {CORE_CATEGORIES.map(cat => (
-                  <button key={cat.id} onClick={() => setActiveCoreCat(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black transition-all ${activeCoreCat === cat.id ? `${cat.bg} ${cat.color} ring-2 ring-current` : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}>
+                  <button key={cat.id} onClick={() => setActiveCoreCat(cat.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all ${activeCoreCat === cat.id ? `${cat.bg} ${cat.color} ring-2 ring-current` : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}>
                     {cat.label}
                   </button>
                 ))}
@@ -617,22 +617,22 @@ export default function App() {
                 return (
                   <div key={v.id} className={`group relative p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] border transition-all ${cat.bg} ${cat.border} shadow-sm space-y-3 sm:space-y-4`}>
                     <div className="flex items-center justify-between">
-                      <span className={`text-[10px] font-black uppercase tracking-widest ${cat.color}`}>{cat.label}</span>
+                      <span className={`text-xs sm:text-sm font-black uppercase tracking-widest ${cat.color}`}>{cat.label}</span>
                       <div className="flex items-center gap-2">
-                        <button onClick={() => handlePromoteCoreValue(v.text)} className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"><ChevronUp size={18} strokeWidth={3} /></button>
-                        <span className={`text-xs font-black tabular-nums ${cat.color}`}>{v.progress}%</span>
-                        <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.map(cv => cv.id === v.id ? {...cv, progress: Math.min(100, cv.progress + 10)} : cv) }))} className="p-1 text-slate-300 hover:text-slate-600"><Plus size={14}/></button>
+                        <button onClick={() => handlePromoteCoreValue(v.text)} className="p-1.5 text-slate-300 hover:text-indigo-600 transition-colors"><ChevronUp size={20} strokeWidth={3} /></button>
+                        <span className={`text-sm font-black tabular-nums ${cat.color}`}>{v.progress}%</span>
+                        <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.map(cv => cv.id === v.id ? {...cv, progress: Math.min(100, cv.progress + 10)} : cv) }))} className="p-1 text-slate-300 hover:text-slate-600"><Plus size={16}/></button>
                       </div>
                     </div>
                     <EditableText 
                       value={v.text} 
                       onSave={(text) => setData(p => ({ ...p, coreValues: p.coreValues.map(cv => cv.id === v.id ? {...cv, text} : cv) }))}
-                      className="text-sm sm:text-base font-bold text-slate-800 leading-snug break-words"
+                      className="text-base sm:text-lg font-bold text-slate-800 leading-snug break-words"
                     />
                     <div className="w-full h-1.5 bg-white/50 rounded-full overflow-hidden">
                       <div className={`h-full transition-all duration-1000 ${cat.active.split(' ')[0]}`} style={{ width: `${v.progress}%` }} />
                     </div>
-                    <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.filter(cv => cv.id !== v.id) }))} className="absolute -top-2 -right-2 w-8 h-8 bg-white text-rose-500 rounded-full shadow-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100"><Trash2 size={14} /></button>
+                    <button onClick={() => setData(p => ({ ...p, coreValues: p.coreValues.filter(cv => cv.id !== v.id) }))} className="absolute -top-2 -right-2 w-9 h-9 bg-white text-rose-500 rounded-full shadow-lg flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100"><Trash2 size={16} /></button>
                   </div>
                 );
               })}
@@ -643,7 +643,7 @@ export default function App() {
         {/* AI Insights Card */}
         <section className="bg-indigo-600 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-12 text-white shadow-[0_32px_64px_-16px_rgba(79,70,229,0.3)] relative overflow-hidden">
           <Sparkles className="absolute -top-6 -right-6 w-32 h-32 sm:w-48 sm:h-48 opacity-10 rotate-12" />
-          <p className="text-base sm:text-2xl font-bold italic relative z-10 leading-relaxed text-center break-words px-2">"{inspiration || "Aligning with your vision..."}"</p>
+          <p className="text-lg sm:text-2xl font-bold italic relative z-10 leading-relaxed text-center break-words px-2">"{inspiration || "Aligning with your vision..."}"</p>
         </section>
 
       </main>
@@ -651,8 +651,8 @@ export default function App() {
       {/* Status Indicators */}
       {(loading || syncing) && (
         <div className="fixed bottom-10 left-10 bg-white/95 backdrop-blur px-6 py-4 rounded-3xl shadow-2xl border border-slate-100 flex items-center gap-3 z-[1000] animate-in fade-in slide-in-from-bottom-4">
-          <RefreshCcw size={18} className="text-indigo-600 animate-spin" />
-          <p className="text-sm font-bold text-slate-900">{loading ? "Synchronizing Data..." : "Saving Changes..."}</p>
+          <RefreshCcw size={20} className="text-indigo-600 animate-spin" />
+          <p className="text-base font-bold text-slate-900">{loading ? "Synchronizing Data..." : "Saving Changes..."}</p>
         </div>
       )}
     </div>
