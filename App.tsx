@@ -459,6 +459,12 @@ export default function App() {
                   onDelete={(id) => setData(p => ({ ...p, goals: p.goals.filter(item => item.id !== id) }))} 
                   onAIAction={handleAIDivide}
                   onCopyToToday={handleCopyToToday}
+                  colorTheme={{
+                    primary: 'text-indigo-600',
+                    light: 'bg-indigo-50',
+                    bg: 'bg-indigo-500',
+                    border: 'border-indigo-100'
+                  }}
                 />
               ))}
             </div>
@@ -599,6 +605,12 @@ export default function App() {
                   onAIAction={handleAIDivide}
                   onCopyToToday={handleCopyToToday}
                   onPromoteUp={(text) => handlePromoteGoal('monthly', text)}
+                  colorTheme={{
+                    primary: 'text-purple-600',
+                    light: 'bg-purple-50',
+                    bg: 'bg-purple-500',
+                    border: 'border-purple-100'
+                  }}
                 />
               ))}
             </div>
@@ -637,6 +649,12 @@ export default function App() {
                   onDelete={(id) => setData(p => ({ ...p, goals: p.goals.filter(item => item.id !== id) }))}
                   onCopyToToday={handleCopyToToday}
                   onPromoteUp={(text) => handlePromoteGoal('yearly', text)}
+                  colorTheme={{
+                    primary: 'text-rose-600',
+                    light: 'bg-rose-50',
+                    bg: 'bg-rose-500',
+                    border: 'border-rose-100'
+                  }}
                 />
               ))}
             </div>
